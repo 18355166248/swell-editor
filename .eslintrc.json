@@ -1,3 +1,8 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react/react-in-jsx-scope": "off", // 在使用 JSX 语法时，需要确保已经正确引入了 React 库
+    "jsx-a11y/anchor-is-valid": "off", // a标签 herf 空不报错
+    "default-case": "off"
+  }
 }
