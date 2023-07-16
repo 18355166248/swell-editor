@@ -3,16 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tauri:dev": "tauri dev",
+    "prettier": "prettier -w --check src"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
+    "allotment": "^1.19.0",
+    "antd": "^5.7.0",
     "autoprefixer": "10.4.14",
+    "clsx": "^1.2.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.10",
     "next": "13.4.10",
@@ -23,6 +32,9 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.4.0"
+    "@tauri-apps/cli": "^1.4.0",
+    "monaco-editor": "^0.40.0",
+    "monaco-editor-webpack-plugin": "^7.1.0",
+    "prettier": "^3.0.0"
   }
 }
