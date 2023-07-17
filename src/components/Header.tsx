@@ -28,7 +28,7 @@ function Header({ leftBtn, rightBtn }: HeaderProps) {
   }
 
   return (
-    <div className="p-3 h-16 flex justify-between items-center border-gray-200 border-solid border-b flex-grow-0 flex-shrink-0 text-gray-700 dark:text-gray-300">
+    <div className="p-3 h-16 flex justify-between items-center flex-grow-0 flex-shrink-0 text-gray-700 dark:text-gray-300">
       <div className="left flex items-center space-x-2">
         <h1 className="mr-2 dark:text-white font-bold">Megalo Editor</h1>
         {leftBtn}
