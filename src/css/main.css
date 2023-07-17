@@ -5,3 +5,7 @@
   width: 100%;
   display: flex;
 }
+
+/* .disable-transitions * {
+  transition: none !important;
+} */
