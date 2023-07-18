@@ -2,17 +2,15 @@ import { createMonacoEditor } from "@/monaco"
 import { useEffect, useRef, useState } from "react"
 
 function EditorDesktop() {
-  const editorContainerRef = useRef<HTMLDivElement | null>(null)
+  const editorContainerRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<any>(null)
 
   const [initialContent] = useState({})
 
   useEffect(() => {
+    if (!editorContainerRef.current) return
     const editor = createMonacoEditor({
       container: editorContainerRef.current,
-      initialContent,
-      onChange,
-      onScroll,
     })
 
     editorRef.current = editor
