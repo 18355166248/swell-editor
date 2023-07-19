@@ -1,7 +1,9 @@
 import PQueue from "p-queue"
 
-export function createWorkerQueue(Worker: any) {
-  const worker = new Worker()
+// 生成执行队列
+export function createWorkerQueue(workerPath: string) {
+  const worker = new Worker(new URL(workerPath, import.meta.url))
+  console.log("worker", worker)
   const queue = new PQueue({ concurrency: 1 })
   return {
     worker,

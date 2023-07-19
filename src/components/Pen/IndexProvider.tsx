@@ -1,5 +1,13 @@
 import { THEME_KEY } from "@/css/markdown-theme"
+import { getDefaultContent } from "@/utils/getDefaultContent"
 import { createContext, Dispatch, useContext, useReducer } from "react"
+
+export interface ContentProps {
+  _id: string
+  html: any
+  css: string
+  config: string
+}
 
 /**
  * 定义要储存的类型接口
@@ -7,6 +15,7 @@ import { createContext, Dispatch, useContext, useReducer } from "react"
 export interface GlobalFace {
   isMac: boolean
   markdownTheme: THEME_KEY
+  initialContent: ContentProps
 }
 /**
  * 初始值
@@ -14,6 +23,7 @@ export interface GlobalFace {
 export const globalDataInit: GlobalFace = {
   isMac: true,
   markdownTheme: "default",
+  initialContent: getDefaultContent(),
 }
 /**
  * GlobalReducer 接口

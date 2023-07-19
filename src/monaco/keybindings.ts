@@ -1,4 +1,6 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
+// @ts-ignore
+import { CommandsRegistry } from "monaco-editor/esm/vs/platform/commands/common/commands"
 
 export function initKeyBindings(editor: monaco.editor.IStandaloneCodeEditor) {
   // 快捷键
@@ -21,4 +23,31 @@ export function initKeyBindings(editor: monaco.editor.IStandaloneCodeEditor) {
       }
     },
   })
+}
+
+// 更新快捷键
+export const updateKeyBinding = (
+  editor: monaco.editor.ICodeEditor,
+  id: string,
+  newKeyBinding?: number
+) => {
+  if (editor._standaloneKeybindingService) {
+    editor._standaloneKeybindingService.addDynamicKeybinding(
+      `-${id}`,
+      0,
+      () => {}
+    )
+
+    if (newKeyBinding) {
+      const { handler, when } = CommandsRegistry.getCommand(id) ?? {}
+      if (handler) {
+        editor._standaloneKeybindingService.addDynamicKeybinding(
+          id,
+          newKeyBinding,
+          handler,
+          when
+        )
+      }
+    }
+  }
 }
