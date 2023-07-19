@@ -13,6 +13,7 @@ export function getColor(path: string) {
   )
 }
 
+// 配置主题rules
 export function makeTheme(themeColors: Record<string, string>) {
   return Object.entries(themeColors).map(([token, colorPath]) => ({
     token,

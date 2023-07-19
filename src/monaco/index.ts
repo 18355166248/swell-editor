@@ -1,6 +1,8 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
 import { getColor, makeTheme } from "./utils"
 import { getTheme } from "@/utils/theme"
+import { monacoConfig } from "./monaco.config"
+import { initKeyBindings } from "./keybindings"
 
 export interface CreateMonacoEditorProps {
   container: HTMLElement
@@ -109,14 +111,39 @@ export function createMonacoEditor({ container }: CreateMonacoEditorProps) {
     },
   })
 
+  monaco.editor.addKeybindingRules([
+    {
+      keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
+      command: "editor.action.formatDocument", // ID
+      when: "textInputFocus", // When
+    },
+  ])
+
+  // 初始化编辑器
   const editor = monaco.editor.create(container, {
     theme: getTheme() === "dark" ? "dark" : "light",
-    wordWrap: "on",
-    lineHeight: 21,
-    fontSize: 18,
+    wordWrap: "on", // 文本换行配置
+    lineHeight: monacoConfig.lineHeight,
+    fontSize: monacoConfig.fontSize,
+    minimap: {
+      enabled: false, // 隐藏
+    },
+    fixedOverflowWidgets: true, // 我的编辑器整体宽度较小，而提示项的宽度较大，导致提示框的一部分被覆盖。查了一下issues，没有直接把提示框限定在编辑器范围内的配置项。但有一个相关的配置项，设置为true后，可以把隐藏的部分显示出来
+    unicodeHighlight: {
+      ambiguousCharacters: false, // 取消 unicode ASCII编码 字符串高亮问题
+    },
   })
 
   disposables.push(editor)
+
+  // 初始化快捷键
+  initKeyBindings(editor)
+  console.log((editor as any)._standaloneKeybindingService.addDynamicKeybinding)
+
+  // ;(editor as any)._standaloneKeybindingService.addDynamicKeybinding(
+  //   "-editor.action.formatDocument", // command ID prefixed by '-'
+
+  // )
 
   return {
     dispose: () => {

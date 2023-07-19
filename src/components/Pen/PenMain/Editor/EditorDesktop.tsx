@@ -9,6 +9,7 @@ function EditorDesktop() {
 
   useEffect(() => {
     if (!editorContainerRef.current) return
+    // 初始化编辑器
     const editor = createMonacoEditor({
       container: editorContainerRef.current,
     })
