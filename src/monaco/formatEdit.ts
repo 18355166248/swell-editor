@@ -2,7 +2,8 @@ import { createWorkerQueue } from "@/utils/workers"
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
 import PrettierWorker from "worker-loader!../workers/prettier.worker.js"
 
-function registerDocumentFormattingEditProviders() {
+function registerDocumentFormattingEditProviders () {
+  const disposables: any[] = [] // 销毁列表
   let prettierWorker: {
     worker: Worker
     emit(data: any): Promise<unknown>
@@ -35,11 +36,18 @@ function registerDocumentFormattingEditProviders() {
   }
 
   const _registerDocumentFormattingEditProvider =
-    monaco.languages.registerDocumentFormattingEditProvider
+    monaco.languages.registerDocumentFormattingEditProvider;
 
-  _registerDocumentFormattingEditProvider("markdown", formattingEditProvider)
-  _registerDocumentFormattingEditProvider("css", formattingEditProvider)
-  _registerDocumentFormattingEditProvider("javascript", formattingEditProvider)
+  disposables.push(_registerDocumentFormattingEditProvider("markdown", formattingEditProvider))
+  disposables.push(_registerDocumentFormattingEditProvider("css", formattingEditProvider))
+  disposables.push(_registerDocumentFormattingEditProvider("javascript", formattingEditProvider))
+
+  return {
+    dispose () {
+      disposables.forEach(disposable => disposable.dispose())
+      prettierWorker && prettierWorker.terminate()
+    }
+  }
 }
 
 export { registerDocumentFormattingEditProviders }

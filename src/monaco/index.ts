@@ -37,7 +37,7 @@ export function createMonacoEditor({
   }
 
   // 覆盖默认的格式化功能, 使用 prettier 替代
-  registerDocumentFormattingEditProviders()
+  disposables.push(registerDocumentFormattingEditProviders())
 
   // 设置 markdown 的 模型 用来生成预览
   const html = setupMarkdownMode(
