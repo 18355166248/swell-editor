@@ -1,0 +1,11 @@
+.list-card {
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  max-width: 320px;
+  background: #ffffff;
+  border: 1px solid #94cff7;
+  opacity: 1;
+  border-radius: 6px;
+  padding: 5.5px;
+}

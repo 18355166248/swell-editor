@@ -2,6 +2,8 @@ import { THEME_KEY } from "@/css/markdown-theme"
 import { getDefaultContent } from "@/utils/getDefaultContent"
 import { createContext, Dispatch, useContext, useReducer } from "react"
 
+export type TabBarKey = "html" | "css" | "config"
+
 export interface ContentProps {
   _id: string
   html: any
@@ -13,9 +15,10 @@ export interface ContentProps {
  * 定义要储存的类型接口
  */
 export interface GlobalFace {
-  isMac: boolean
-  markdownTheme: THEME_KEY
-  initialContent: ContentProps
+  isMac: boolean // 编辑器的代码块是否展示 Mac 风格
+  markdownTheme: THEME_KEY // 代码预览主题
+  initialContent: ContentProps // 初始化数据
+  activeTab: TabBarKey // 编辑器的活动选项
 }
 /**
  * 初始值
@@ -24,6 +27,7 @@ export const globalDataInit: GlobalFace = {
   isMac: true,
   markdownTheme: "default",
   initialContent: getDefaultContent(),
+  activeTab: "html",
 }
 /**
  * GlobalReducer 接口

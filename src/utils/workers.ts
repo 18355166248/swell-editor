@@ -1,15 +1,20 @@
 import PQueue from "p-queue"
 
+interface WebpackWorker {
+  new (): Worker
+}
+
 // 生成执行队列
-export function createWorkerQueue(workerPath: string) {
-  const worker = new Worker(new URL(workerPath, import.meta.url))
-  console.log("worker", worker)
+export function createWorkerQueue(NewWorker: WebpackWorker) {
+  // 本地有跨域问题
+  // const worker = new Worker(new URL(workerPath, import.meta.url))
+  const worker = new NewWorker()
   const queue = new PQueue({ concurrency: 1 })
   return {
     worker,
     emit(data: any) {
       queue.clear()
-      const _id = Math.random().toString(36).substr(2, 5)
+      const _id = Math.random().toString(36).substring(2, 5)
       worker.postMessage({ _current: _id })
       return queue.add(
         () =>

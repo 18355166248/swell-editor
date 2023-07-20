@@ -5,7 +5,11 @@ import { initKeyBindings, updateKeyBinding } from "./keybindings"
 import { initMonacoTheme } from "./theme"
 import { registerDocumentFormattingEditProviders } from "./formatEdit"
 import { ContentProps } from "@/components/Pen/IndexProvider"
-import { setupMarkdownMode } from "./markdown"
+import {
+  setupCssMode,
+  setupJavascriptMode,
+  setupMarkdownMode,
+} from "./modelInit"
 
 export interface CreateMonacoEditorProps {
   container: HTMLElement
@@ -32,16 +36,30 @@ export function createMonacoEditor({
     },
   }
 
+  // 覆盖默认的格式化功能, 使用 prettier 替代
   registerDocumentFormattingEditProviders()
 
+  // 设置 markdown 的 模型 用来生成预览
   const html = setupMarkdownMode(
     initialContent.html,
-    (newContent: string) => {
-      console.log(newContent)
-    },
+    (newContent: string) => {},
     () => editor
   )
   disposables.push(html)
+  // 设置 css 的 模型 用来生成预览
+  const css = setupCssMode(
+    initialContent.css,
+    (newContent: string) => {},
+    () => editor
+  )
+  disposables.push(css)
+  // 设置 js 的 模型 用来生成预览
+  const config = setupJavascriptMode(
+    initialContent.config,
+    (newContent: string) => {},
+    () => editor
+  )
+  disposables.push(config)
 
   // 配置主题
   initMonacoTheme()
@@ -66,14 +84,19 @@ export function createMonacoEditor({
   // 初始化快捷键
   initKeyBindings(editor)
 
-  // 覆盖 ctrl+s 快捷键 格式化代码
+  // 设置 ctrl+s 快捷键 = 格式化代码
   updateKeyBinding(
     editor,
     "editor.action.formatDocument",
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
   )
 
+  // 整合模型
+  const models = { html, css, config }
+
   return {
+    editor,
+    models,
     dispose: () => {
       disposables.forEach((disposable) => disposable.dispose())
     },

@@ -1,25 +1,27 @@
 import clsx from "clsx"
+import { usePenContext } from "../IndexProvider"
 
-export type TabBarKey = "html" | "css" | "config"
-
-interface TabBarProps {
-  value: TabBarKey
-  onChange: (val: TabBarKey) => void
-}
-
-function TabBar({ value, onChange }: TabBarProps) {
+function TabBar() {
+  const { globalState, setGlobalState } = usePenContext()
+  const { activeTab } = globalState
   return (
     <div className="pl-5 pr-4 absolute z-10 left-0 right-0">
       <div className="flex space-x-5">
-        <TabButton isActive={value === "html"} onClick={() => onChange("html")}>
+        <TabButton
+          isActive={activeTab === "html"}
+          onClick={() => setGlobalState({ activeTab: "html" })}
+        >
           MDX
         </TabButton>
-        <TabButton isActive={value === "css"} onClick={() => onChange("css")}>
+        <TabButton
+          isActive={activeTab === "css"}
+          onClick={() => setGlobalState({ activeTab: "css" })}
+        >
           CSS
         </TabButton>
         <TabButton
-          isActive={value === "config"}
-          onClick={() => onChange("config")}
+          isActive={activeTab === "config"}
+          onClick={() => setGlobalState({ activeTab: "config" })}
         >
           Config
         </TabButton>

@@ -9,15 +9,16 @@ const headers = [
 ]
 
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/home",
-        permanent: true,
-      },
-    ]
-  },
+  // 重定向
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/home",
+  //       permanent: true,
+  //     },
+  //   ]
+  // },
   async headers() {
     return [
       {

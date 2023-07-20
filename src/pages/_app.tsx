@@ -2,7 +2,7 @@ import "../css/main.css"
 import type { AppProps /*, AppContext */ } from "next/app"
 import Head from "next/head"
 
-const TITLE = "Megalo MDX Editor"
+const TITLE = "Megalo Editor"
 const DESCRIPTION = "markdown 编辑器"
 const FAVICON_VERSION = 3
 
@@ -38,8 +38,8 @@ export default function App({ Component, pageProps }: AppProps) {
           color="#38bdf8"
         />
         <link rel="shortcut icon" href={v("/favicons/favicon.ico")} /> */}
-        <meta name="apple-mobile-web-app-title" content="MDX Editor" />
-        <meta name="application-name" content="MDX Editor" />
+        <meta name="apple-mobile-web-app-title" content="Megalo Editor" />
+        <meta name="application-name" content="Megalo Editor" />
         <meta name="msapplication-TileColor" content="#38bdf8" />
         <meta
           name="msapplication-config"

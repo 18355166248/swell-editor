@@ -1,5 +1,5 @@
 import { createMonacoEditor } from "@/monaco"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { usePenContext } from "../../IndexProvider"
 
 function EditorDesktop() {
@@ -7,7 +7,7 @@ function EditorDesktop() {
   const editorRef = useRef<any>(null)
 
   const { globalState } = usePenContext()
-  const { initialContent } = globalState
+  const { initialContent, activeTab } = globalState
 
   useEffect(() => {
     if (!editorContainerRef.current) return
@@ -23,6 +23,25 @@ function EditorDesktop() {
       editorRef.current.dispose()
     }
   }, [])
+
+  // 监听编辑器是否宽高有变化 动态刷新编辑器位置
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      setTimeout(() => {
+        editorRef.current.editor.layout()
+      }, 0)
+    })
+
+    editorContainerRef.current && observer.observe(editorContainerRef.current)
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const { editor, models } = editorRef.current
+    models[activeTab].activate()
+  }, [activeTab])
 
   function onScroll() {}
 

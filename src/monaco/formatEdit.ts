@@ -1,5 +1,6 @@
 import { createWorkerQueue } from "@/utils/workers"
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
+import PrettierWorker from "worker-loader!../workers/prettier.worker.js"
 
 function registerDocumentFormattingEditProviders() {
   let prettierWorker: {
@@ -14,18 +15,16 @@ function registerDocumentFormattingEditProviders() {
       options: monaco.languages.FormattingOptions,
       _token: monaco.CancellationToken
     ) {
-      console.log(111, prettierWorker)
       if (!prettierWorker) {
-        prettierWorker = createWorkerQueue(
-          "worker-loader!../workers/prettier.worker.js"
-        )
+        prettierWorker = createWorkerQueue(PrettierWorker)
       }
+      // src/workers/prettier.worker.js 内部初始化
+      // emit 是在 src/utils/workers.ts 配置
       const { canceled, error, pretty } = (await prettierWorker.emit({
         text: model.getValue(),
         language: model.getLanguageId(),
       })) as any
       if (canceled || error) return []
-      console.log("pretty", pretty)
       return [
         {
           range: model.getFullModelRange(),
@@ -39,6 +38,8 @@ function registerDocumentFormattingEditProviders() {
     monaco.languages.registerDocumentFormattingEditProvider
 
   _registerDocumentFormattingEditProvider("markdown", formattingEditProvider)
+  _registerDocumentFormattingEditProvider("css", formattingEditProvider)
+  _registerDocumentFormattingEditProvider("javascript", formattingEditProvider)
 }
 
 export { registerDocumentFormattingEditProviders }
