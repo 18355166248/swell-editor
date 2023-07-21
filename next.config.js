@@ -29,6 +29,12 @@ const nextConfig = {
   },
   webpack: (config, { isServer, webpack, dev }) => {
     if (!isServer) {
+      // TODO https://stackoverflow.com/questions/64926174/module-not-found-cant-resolve-fs-in-next-js-application
+      // Module not found: Can't resolve 'fs' in Next.js application
+      // config.node = {
+      //   fs: "empty",
+      // }
+      config.resolve.fallback = { fs: false }
       config.plugins.push(
         new MonacoWebpackPlugin({
           languages: ["markdown", "css", "typescript", "javascript", "html"],

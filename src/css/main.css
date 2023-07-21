@@ -1,6 +1,8 @@
 @import "./tailwind.css";
 @import "allotment/dist/style.css";
 
+/* @import "./mdx.css"; */
+
 #__next {
   width: 100%;
   display: flex;
