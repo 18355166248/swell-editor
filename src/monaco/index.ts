@@ -6,6 +6,7 @@ import { initMonacoTheme } from "./theme"
 import { registerDocumentFormattingEditProviders } from "./formatEdit"
 import { ContentProps } from "@/components/Pen/IndexProvider"
 import {
+  ModelProps,
   setupCssMode,
   setupJavascriptMode,
   setupMarkdownMode,
@@ -14,11 +15,13 @@ import {
 export interface CreateMonacoEditorProps {
   container: HTMLElement
   initialContent: ContentProps
+  onChange: () => void
 }
 
 export function createMonacoEditor({
   container,
   initialContent,
+  onChange,
 }: CreateMonacoEditorProps) {
   const disposables: any[] = [] // 销毁列表
 
@@ -39,24 +42,34 @@ export function createMonacoEditor({
   // 覆盖默认的格式化功能, 使用 prettier 替代
   disposables.push(registerDocumentFormattingEditProviders())
 
+  function onContentChange() {
+    onChange()
+  }
+
   // 设置 markdown 的 模型 用来生成预览
   const html = setupMarkdownMode(
     initialContent.html,
-    (newContent: string) => {},
+    () => {
+      onContentChange()
+    },
     () => editor
   )
   disposables.push(html)
   // 设置 css 的 模型 用来生成预览
   const css = setupCssMode(
     initialContent.css,
-    (newContent: string) => {},
+    () => {
+      onContentChange()
+    },
     () => editor
   )
   disposables.push(css)
   // 设置 js 的 模型 用来生成预览
   const config = setupJavascriptMode(
     initialContent.config,
-    (newContent: string) => {},
+    () => {
+      onContentChange()
+    },
     () => editor
   )
   disposables.push(config)
@@ -101,4 +114,14 @@ export function createMonacoEditor({
       disposables.forEach((disposable) => disposable.dispose())
     },
   }
+}
+
+export type CreateMonacoEditorResult = {
+  editor: monaco.editor.IStandaloneCodeEditor
+  models: {
+    html: ModelProps
+    css: ModelProps
+    config: ModelProps
+  }
+  dispose: () => void
 }

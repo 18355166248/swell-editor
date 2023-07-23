@@ -1,26 +1,46 @@
 import { createMonacoEditor } from "@/monaco"
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { usePenContext } from "../../IndexProvider"
 
 function EditorDesktop() {
   const editorContainerRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<any>(null)
 
-  const { globalState } = usePenContext()
-  const { initialContent, activeTab } = globalState
+  const { globalState, setGlobalState } = usePenContext()
+  const { initialContent, activeTab, editorConfig } = globalState
+
+  const editorConfigRef = useRef(editorConfig)
+
+  // 编辑器文本变化 更新代码
+  const onChange = useCallback(() => {
+    console.log(editorConfigRef.current)
+    if (editorConfigRef.current) {
+      const { models } = editorConfigRef.current
+      const { html, css, config } = models
+      initialContent.html = html.getModel().getValue()
+      initialContent.css = css.getModel().getValue()
+      initialContent.config = config.getModel().getValue()
+
+      setGlobalState({ initialContent: { ...initialContent } })
+    }
+  }, [])
 
   useEffect(() => {
     if (!editorContainerRef.current) return
+
     // 初始化编辑器
-    const editor = createMonacoEditor({
+    const editorConfig = createMonacoEditor({
       container: editorContainerRef.current,
       initialContent,
+      onChange,
     })
-
-    editorRef.current = editor
+    setGlobalState({
+      editorConfig,
+    })
+    // 缓存一份
+    editorConfigRef.current = editorConfig
 
     return () => {
-      editorRef.current.dispose()
+      editorConfig.dispose()
     }
   }, [])
 
@@ -28,7 +48,7 @@ function EditorDesktop() {
   useEffect(() => {
     const observer = new ResizeObserver(() => {
       setTimeout(() => {
-        editorRef.current.editor.layout()
+        editorConfig?.editor?.layout()
       }, 0)
     })
 
@@ -36,16 +56,15 @@ function EditorDesktop() {
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [editorConfig])
 
   useEffect(() => {
-    const { editor, models } = editorRef.current
+    if (!editorConfig) return
+    const { models } = editorConfig
     models[activeTab].activate()
-  }, [activeTab])
+  }, [activeTab, editorConfig])
 
   function onScroll() {}
-
-  function onChange() {}
 
   return <div className="pt-12 flex-auto h-full" ref={editorContainerRef}></div>
 }

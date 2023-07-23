@@ -1,6 +1,8 @@
 import { THEME_KEY } from "@/css/markdown-theme"
 import { getDefaultContent } from "@/utils/getDefaultContent"
 import { createContext, Dispatch, useContext, useReducer } from "react"
+import { CreateMonacoEditorResult } from "../../monaco"
+import { CodeThemesKeysType } from "@/css/prism-themes"
 
 export type TabBarKey = "html" | "css" | "config"
 
@@ -16,9 +18,11 @@ export interface ContentProps {
  */
 export interface GlobalFace {
   isMac: boolean // 编辑器的代码块是否展示 Mac 风格
-  markdownTheme: THEME_KEY // 代码预览主题
+  markdownTheme: THEME_KEY // md预览主题
+  codeTheme: CodeThemesKeysType // 代码 prism 主题
   initialContent: ContentProps // 初始化数据
   activeTab: TabBarKey // 编辑器的活动选项
+  editorConfig?: CreateMonacoEditorResult
 }
 /**
  * 初始值
@@ -28,6 +32,7 @@ export const globalDataInit: GlobalFace = {
   markdownTheme: "default",
   initialContent: getDefaultContent(),
   activeTab: "html",
+  codeTheme: "xonokai", // 代码 prism 主题
 }
 /**
  * GlobalReducer 接口

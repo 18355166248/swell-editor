@@ -1,6 +1,7 @@
 import { Allotment } from "allotment"
 import TabBar from "./TabBar"
 import Editor from "./Editor"
+import Preview from "./Preview"
 
 function PenMain() {
   return (
@@ -11,7 +12,7 @@ function PenMain() {
           <Editor />
         </Allotment.Pane>
         <Allotment.Pane minSize={300}>
-          <div>4</div>
+          <Preview />
         </Allotment.Pane>
       </Allotment>
     </main>

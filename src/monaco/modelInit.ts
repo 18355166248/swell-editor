@@ -1,16 +1,23 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
-import { debounce } from "lodash-es"
+import { DebouncedFunc, debounce } from "lodash-es"
 
 export const HTML_URI = "file:///index.md"
 export const CSS_URI = "file:///index.css"
 export const JAVASCRIPT_URI = "file:///index.js"
+
+export interface ModelProps {
+  getModel: () => monaco.editor.ITextModel
+  updateDecorations: DebouncedFunc<() => Promise<void>>
+  activate: () => void
+  dispose(): void
+}
 
 // 初始化 markdown 模型
 export function setupMarkdownMode(
   content: string,
   onChange: Function,
   getEditor: Function
-) {
+): ModelProps {
   const disposables: any[] = []
   const model = monaco.editor.createModel(
     content || "",
@@ -47,7 +54,7 @@ export function setupCssMode(
   content: string,
   onChange: Function,
   getEditor: Function
-) {
+): ModelProps {
   const disposables: any[] = []
   const model = monaco.editor.createModel(
     content || "",
@@ -84,7 +91,7 @@ export function setupJavascriptMode(
   content: string,
   onChange: Function,
   getEditor: Function
-) {
+): ModelProps {
   const disposables: any[] = []
   const model = monaco.editor.createModel(
     content || "",

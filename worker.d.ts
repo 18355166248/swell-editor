@@ -8,3 +8,4 @@ declare module "worker-loader!*" {
   // export = WebpackWorker;
   export default WebpackWorker
 }
+declare module "!!raw-loader!*"

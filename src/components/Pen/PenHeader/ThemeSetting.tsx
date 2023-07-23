@@ -5,6 +5,11 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid"
 import { usePenContext } from "../IndexProvider"
 import { THEME_KEY, themes, themesKeys } from "@/css/markdown-theme"
 import clsx from "clsx"
+import {
+  CodeThemesKeysType,
+  codeThemes,
+  codeThemesKeys,
+} from "@/css/prism-themes"
 
 function ThemeSetting() {
   const { globalState, setGlobalState } = usePenContext()
@@ -35,7 +40,7 @@ function ThemeSetting() {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute right-0 z-10 bg-white mt-1 max-w-sm sm:px-0 w-60 dark:bg-gray-800 dark:ring-0 dark:text-gray-300 dark:shadow-highlight/4">
+            <Popover.Panel className="absolute right-0 z-10 bg-white mt-1 max-w-sm sm:px-0 w-80 dark:bg-gray-800 dark:ring-0 dark:text-gray-300 dark:shadow-highlight/4">
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 px-6 py-3">
                 <div className="relative flex items-center mb-6">
                   <label className="pr-2">主题: </label>
@@ -44,6 +49,16 @@ function ThemeSetting() {
                     value={globalState.markdownTheme}
                     onChange={(markdownTheme: THEME_KEY) =>
                       setGlobalState({ ...globalState, markdownTheme })
+                    }
+                  />
+                </div>
+                <div className="relative flex items-center mb-6">
+                  <label className="pr-2">代码: </label>
+                  <CodeThemeSelector
+                    codeThemesData={codeThemes}
+                    value={globalState.codeTheme}
+                    onChange={(codeTheme: CodeThemesKeysType) =>
+                      setGlobalState({ ...globalState, codeTheme })
                     }
                   />
                 </div>
@@ -82,7 +97,7 @@ function ThemeSelector({
 }) {
   return (
     <Listbox value={value} onChange={onChange}>
-      <div className="relative flex-auto z-10">
+      <div className="relative flex-auto z-20">
         <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left focus:outline-none border-gray-200 border dark:border-gray-700">
           <span className="block truncate">{themesData[value].name}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -115,6 +130,67 @@ function ThemeSelector({
                       }`}
                     >
                       {themesData[key].name}
+                    </span>
+                    {selected ? (
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    ) : null}
+                  </>
+                )}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Transition>
+      </div>
+    </Listbox>
+  )
+}
+
+function CodeThemeSelector({
+  value,
+  onChange,
+  codeThemesData,
+}: {
+  value: CodeThemesKeysType
+  onChange: any
+  codeThemesData: typeof codeThemes
+}) {
+  return (
+    <Listbox value={value} onChange={onChange}>
+      <div className="relative flex-auto z-10">
+        <Listbox.Button className="relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left focus:outline-none border-gray-200 border dark:border-gray-700">
+          <span className="block truncate">{codeThemesData[value].name}</span>
+          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <ChevronUpDownIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </span>
+        </Listbox.Button>
+        <Transition
+          as={Fragment}
+          leave="transition ease-in duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md py-1 text-base ring-1 text-gray-900 dark:text-white bg-white dark:bg-gray-900">
+            {codeThemesKeys.map((key) => (
+              <Listbox.Option
+                key={key}
+                className={({ active }) =>
+                  `relative cursor-default select-none py-2 pl-10 pr-4`
+                }
+                value={key}
+              >
+                {({ selected }) => (
+                  <>
+                    <span
+                      className={`block truncate ${
+                        selected ? "font-medium" : "font-normal"
+                      }`}
+                    >
+                      {codeThemesData[key].name}
                     </span>
                     {selected ? (
                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
