@@ -17,7 +17,101 @@ function PenHeader() {
         <>
           <ThemeSetting />
 
-          <div className="hidden lg:flex items-center ml-2 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-500 dark:shadow-highlight/4">
+          <div className="hidden lg:flex mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+
+          <div className="hidden lg:flex items-center rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
+            {/* 左右布局 */}
+            <button
+              type="button"
+              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+            >
+              <span className="sr-only">Switch to vertical split layout</span>
+              <svg
+                width="42"
+                height="36"
+                viewBox="-8 -7 42 36"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+              >
+                <path
+                  d="M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9"
+                  fill="none"
+                ></path>
+                <path d="M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z"></path>
+              </svg>
+            </button>
+            {/* 上下 */}
+            <button
+              type="button"
+              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+            >
+              <span className="sr-only">Switch to horizontal split layout</span>
+              <svg
+                width="42"
+                height="36"
+                viewBox="-8 -7 42 36"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+              >
+                <path d="M23 11V3H3v8h20Z" stroke-width="0"></path>
+                <path
+                  d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2ZM22 11H4"
+                  fill="none"
+                ></path>
+              </svg>
+            </button>
+            {/* 预览 */}
+            <button
+              type="button"
+              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+            >
+              <span className="sr-only">Switch to preview-only layout</span>
+              <svg
+                width="42"
+                height="36"
+                viewBox="-8 -7 42 36"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+              >
+                <path
+                  d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
+                  fill="none"
+                ></path>
+              </svg>
+            </button>
+            {/* 手机预览 */}
+            <button
+              type="button"
+              className="hidden md:block group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+            >
+              <span className="sr-only">Toggle responsive design mode</span>
+              <svg
+                width="42"
+                height="36"
+                viewBox="-8 -7 42 36"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+              >
+                <path
+                  d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"
+                  fill="none"
+                ></path>
+                <path d="M12 17V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2Z"></path>
+              </svg>
+            </button>
+          </div>
+          <div
+            style={{ display: "none" }}
+            className="hidden lg:flex items-center ml-2 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-500 dark:shadow-highlight/4"
+          >
             {/* 展示左右  iconfont layout-sidebar-left */}
             <SvgButton
               onClick={() => {}}

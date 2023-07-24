@@ -5,7 +5,7 @@ import Preview from "./Preview"
 
 function PenMain() {
   return (
-    <main className="border-gray-800 border-solid border-t flex-1">
+    <main className="border-solid flex-1 border-t border-gray-200 dark:border-gray-800">
       <Allotment minSize={100}>
         <Allotment.Pane minSize={300}>
           <TabBar />
