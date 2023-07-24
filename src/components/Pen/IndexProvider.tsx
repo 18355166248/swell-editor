@@ -23,6 +23,7 @@ export interface GlobalFace {
   initialContent: ContentProps // 初始化数据
   activeTab: TabBarKey // 编辑器的活动选项
   editorConfig?: CreateMonacoEditorResult
+  vertical: boolean // allotment
 }
 /**
  * 初始值
@@ -33,6 +34,7 @@ export const globalDataInit: GlobalFace = {
   initialContent: getDefaultContent(),
   activeTab: "html",
   codeTheme: "xonokai", // 代码 prism 主题
+  vertical: false,
 }
 /**
  * GlobalReducer 接口

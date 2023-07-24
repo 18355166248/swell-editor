@@ -54,9 +54,9 @@ function Header({ leftBtn, rightBtn }: HeaderProps) {
             width="36"
             height="36"
             viewBox="-6 -6 36 36"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="stroke-sky-500 fill-sky-100 group-hover:stroke-sky-600 dark:stroke-gray-400 dark:fill-gray-400/20 dark:group-hover:stroke-gray-300"
           >
             <g className="dark:opacity-0">

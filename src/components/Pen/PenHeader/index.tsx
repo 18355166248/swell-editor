@@ -3,8 +3,14 @@ import CopyBtn from "./CopyBtn"
 import ExportPDFBtn from "./ExportPDFBtn"
 import ThemeSetting from "./ThemeSetting"
 import SvgButton from "@/commonComponents/SvgButton"
+import clsx from "clsx"
+import { usePenContext } from "../IndexProvider"
 
 function PenHeader() {
+  const { globalState, setGlobalState } = usePenContext()
+  const { vertical } = globalState
+  console.log("🚀 ~ file: index.tsx:12 ~ PenHeader ~ vertical:", vertical)
+
   return (
     <Header
       leftBtn={
@@ -22,18 +28,29 @@ function PenHeader() {
           <div className="hidden lg:flex items-center rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
             {/* 左右布局 */}
             <button
+              onClick={() => setGlobalState({ vertical: false })}
               type="button"
-              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+              className={clsx(
+                "group focus:outline-none focus-visible:ring-2 rounded-md ",
+                vertical
+                  ? "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+                  : "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+              )}
             >
               <span className="sr-only">Switch to vertical split layout</span>
               <svg
                 width="42"
                 height="36"
                 viewBox="-8 -7 42 36"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={clsx(
+                  "fill-sky-100",
+                  vertical
+                    ? "stroke-gray-500 dark:fill-gray-400/50 dark:stroke-gray-400"
+                    : "stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                )}
               >
                 <path
                   d="M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9"
@@ -44,20 +61,32 @@ function PenHeader() {
             </button>
             {/* 上下 */}
             <button
+              onClick={() => setGlobalState({ vertical: true })}
               type="button"
-              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+              className={clsx(
+                "group focus:outline-none focus-visible:ring-2 rounded-md ",
+                vertical
+                  ? "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+                  : "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+              )}
             >
               <span className="sr-only">Switch to horizontal split layout</span>
               <svg
                 width="42"
                 height="36"
                 viewBox="-8 -7 42 36"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={clsx(
+                  "",
+                  // "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400",
+                  vertical
+                    ? "fill-sky-100 stroke-sky-400/70 dark:fill-sky-400/20 dark:stroke-sky-500"
+                    : "fill-gray-100 stroke-gray-400/70 dark:fill-gray-400/20 dark:stroke-gray-500"
+                )}
               >
-                <path d="M23 11V3H3v8h20Z" stroke-width="0"></path>
+                <path d="M23 11V3H3v8h20Z" strokeWidth="0"></path>
                 <path
                   d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2ZM22 11H4"
                   fill="none"
@@ -74,9 +103,9 @@ function PenHeader() {
                 width="42"
                 height="36"
                 viewBox="-8 -7 42 36"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
               >
                 <path
@@ -95,9 +124,9 @@ function PenHeader() {
                 width="42"
                 height="36"
                 viewBox="-8 -7 42 36"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
               >
                 <path
