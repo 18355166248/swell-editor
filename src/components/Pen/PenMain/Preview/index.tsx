@@ -16,7 +16,11 @@ function FallbackComponent({ error }: any) {
   )
 }
 
-function Preview() {
+interface PreviewProps {
+  className?: string
+}
+
+function Preview({ className }: PreviewProps) {
   const [state, setState] = useState<IframeContentProps>()
   const { globalState } = usePenContext()
   const { initialContent } = globalState
@@ -45,7 +49,7 @@ function Preview() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <IframeContent {...state} />
+      <IframeContent {...state} className={className} />
     </ErrorBoundary>
   )
 }

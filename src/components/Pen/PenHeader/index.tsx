@@ -47,8 +47,9 @@ function PenHeader() {
                 strokeLinejoin="round"
                 className={clsx(
                   "fill-sky-100",
+                  "hover:fill-gray-200 hover:stroke-gray-400 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400",
                   vertical
-                    ? "stroke-gray-500 dark:fill-gray-400/50 dark:stroke-gray-400"
+                    ? "stroke-gray-500 dark:fill-gray-400/20 dark:stroke-gray-500"
                     : "stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
                 )}
               >

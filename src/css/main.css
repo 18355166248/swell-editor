@@ -1,13 +1,9 @@
 @import "./tailwind.css";
 @import "allotment/dist/style.css";
 
-/* @import "./mdx.css"; */
+@import "./react-split-pane.css";
 
 #__next {
   width: 100%;
   display: flex;
 }
-
-/* .disable-transitions * {
-  transition: none !important;
-} */

@@ -9,9 +9,10 @@ export interface IframeContentProps {
   html?: string
   css?: string
   id?: string
+  className?: string
 }
 
-function IframeContent({ html, css, id }: IframeContentProps) {
+function IframeContent({ html, css, id, className }: IframeContentProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { globalState } = usePenContext()
   const { markdownTheme, codeTheme } = globalState
@@ -28,7 +29,11 @@ function IframeContent({ html, css, id }: IframeContentProps) {
   }, [html, iframeCss])
 
   return (
-    <iframe ref={iframeRef} className="w-full h-full" srcDoc={iframeText} />
+    <iframe
+      ref={iframeRef}
+      className={`w-full h-full ${className}`}
+      srcDoc={iframeText}
+    />
   )
 }
 
