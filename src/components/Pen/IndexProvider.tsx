@@ -23,7 +23,9 @@ export interface GlobalFace {
   initialContent: ContentProps // 初始化数据
   activeTab: TabBarKey // 编辑器的活动选项
   editorConfig?: CreateMonacoEditorResult
-  vertical: boolean
+  split?: "vertical" | "horizontal" // vertical左右  horizontal上下
+  preview: boolean // 只预览 隐藏编辑
+  mobile: boolean // 预览 展示手机模式
 }
 /**
  * 初始值
@@ -34,7 +36,9 @@ export const globalDataInit: GlobalFace = {
   initialContent: getDefaultContent(),
   activeTab: "html",
   codeTheme: "xonokai", // 代码 prism 主题
-  vertical: true,
+  split: "vertical",
+  preview: false,
+  mobile: false,
 }
 /**
  * GlobalReducer 接口

@@ -8,8 +8,7 @@ import { usePenContext } from "../IndexProvider"
 
 function PenHeader() {
   const { globalState, setGlobalState } = usePenContext()
-  const { vertical } = globalState
-  console.log("🚀 ~ file: index.tsx:12 ~ PenHeader ~ vertical:", vertical)
+  const { split, preview, mobile } = globalState
 
   return (
     <Header
@@ -28,13 +27,15 @@ function PenHeader() {
           <div className="hidden lg:flex items-center rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
             {/* 左右布局 */}
             <button
-              onClick={() => setGlobalState({ vertical: false })}
+              onClick={() =>
+                setGlobalState({ split: "vertical", preview: false })
+              }
               type="button"
               className={clsx(
-                "group focus:outline-none focus-visible:ring-2 rounded-md ",
-                vertical
-                  ? "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
-                  : "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+                "group focus:outline-none focus-visible:ring-2 rounded-md",
+                split === "vertical"
+                  ? "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+                  : "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
               )}
             >
               <span className="sr-only">Switch to vertical split layout</span>
@@ -46,11 +47,9 @@ function PenHeader() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className={clsx(
-                  "fill-sky-100",
-                  "hover:fill-gray-200 hover:stroke-gray-400 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400",
-                  vertical
-                    ? "stroke-gray-500 dark:fill-gray-400/20 dark:stroke-gray-500"
-                    : "stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                  split === "vertical"
+                    ? "fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                    : "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
                 )}
               >
                 <path
@@ -62,11 +61,13 @@ function PenHeader() {
             </button>
             {/* 上下 */}
             <button
-              onClick={() => setGlobalState({ vertical: true })}
+              onClick={() =>
+                setGlobalState({ split: "horizontal", preview: false })
+              }
               type="button"
               className={clsx(
-                "group focus:outline-none focus-visible:ring-2 rounded-md ",
-                vertical
+                "group focus:outline-none focus-visible:ring-2 rounded-md",
+                split === "horizontal"
                   ? "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
                   : "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
               )}
@@ -80,11 +81,9 @@ function PenHeader() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className={clsx(
-                  "",
-                  // "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400",
-                  vertical
+                  split === "horizontal"
                     ? "fill-sky-100 stroke-sky-400/70 dark:fill-sky-400/20 dark:stroke-sky-500"
-                    : "fill-gray-100 stroke-gray-400/70 dark:fill-gray-400/20 dark:stroke-gray-500"
+                    : "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
                 )}
               >
                 <path d="M23 11V3H3v8h20Z" strokeWidth="0"></path>
@@ -96,8 +95,19 @@ function PenHeader() {
             </button>
             {/* 预览 */}
             <button
+              onClick={() =>
+                setGlobalState({
+                  preview: !preview,
+                  split: !preview ? undefined : split,
+                })
+              }
               type="button"
-              className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+              className={clsx(
+                "group focus:outline-none focus-visible:ring-2 rounded-md",
+                preview
+                  ? "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+                  : "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+              )}
             >
               <span className="sr-only">Switch to preview-only layout</span>
               <svg
@@ -107,7 +117,11 @@ function PenHeader() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+                className={clsx(
+                  preview
+                    ? "fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                    : "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+                )}
               >
                 <path
                   d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
@@ -117,8 +131,14 @@ function PenHeader() {
             </button>
             {/* 手机预览 */}
             <button
+              onClick={() => setGlobalState({ mobile: !mobile })}
               type="button"
-              className="hidden md:block group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+              className={clsx(
+                "hidden md:block group focus:outline-none focus-visible:ring-2 rounded-md",
+                mobile
+                  ? "focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
+                  : "focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
+              )}
             >
               <span className="sr-only">Toggle responsive design mode</span>
               <svg
@@ -128,7 +148,11 @@ function PenHeader() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                className={clsx(
+                  mobile
+                    ? "fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
+                    : "fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
+                )}
               >
                 <path
                   d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"

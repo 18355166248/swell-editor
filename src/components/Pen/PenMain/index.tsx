@@ -8,7 +8,7 @@ import clsx from "clsx"
 
 function PenMain() {
   const { globalState } = usePenContext()
-  const { vertical } = globalState
+  const { split, preview } = globalState
 
   const [resizing, setResizing] = useState(false)
 
@@ -20,19 +20,19 @@ function PenMain() {
   }
 
   return (
-    <main className="border-solid flex-1 border-t border-gray-200 dark:border-gray-800">
+    <main className="relative border-solid flex-1 border-t border-gray-200 dark:border-gray-800">
       <SplitPane
-        defaultSize="50%"
+        defaultSize={preview ? 0 : "50%"}
         minSize={300}
-        split={vertical ? "vertical" : "horizontal"}
+        split={split}
         onDragStarted={onDragStarted}
         onDragFinished={onDragFinished}
       >
-        <div className="h-full">
+        <div className={clsx({ "h-full w-full": true, "opacity-0": preview })}>
           <TabBar />
           <Editor />
         </div>
-        <div className="h-full">
+        <div className="h-full w-full">
           {/* 解决拖拽的时候拖不动的问题 拖拽的时候给 iframe 加类 */}
           <Preview className={clsx({ "pointer-events-none": resizing })} />
         </div>
