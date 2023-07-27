@@ -32,7 +32,7 @@ function PenMain() {
           <TabBar />
           <Editor />
         </div>
-        <div className="h-full w-full">
+        <div className="h-full w-full hidden lg:block">
           {/* 解决拖拽的时候拖不动的问题 拖拽的时候给 iframe 加类 */}
           <Preview className={clsx({ "pointer-events-none": resizing })} />
         </div>
