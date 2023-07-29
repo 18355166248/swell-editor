@@ -36,7 +36,8 @@ type HandlerType = "left" | "right" | "bottom-left" | "bottom" | "bottom-right"
 
 interface ResizingProps {
   handler: HandlerType
-  startWidth: number
+  startWidth?: number
+  startHeight?: number
   startX?: number
   startY?: number
 }
@@ -95,12 +96,8 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
   }, [])
 
   useEffect(() => {
-    // 向 iframe 传递 html css 渲染
-    iframeRef.current?.contentWindow?.postMessage(
-      { html, css: iframeCss, id },
-      "*"
-    )
-  }, [html, iframeCss])
+    inject({ html, css: iframeCss, id })
+  }, [html, id, iframeCss])
 
   useLayoutEffect(() => {
     if (resizing) {
@@ -113,8 +110,49 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
           // 移动的距离
           const moveLeft = x - (resizing?.startX || 0)
           // 乘以2是因为左右两边都要拓宽
-          const width = resizing.startWidth - moveLeft * 2
+          const width = (resizing.startWidth || 0) - moveLeft * 2
           setResponseSize(({ height }) => ({
+            height,
+            width,
+          }))
+        }
+        if (resizing?.handler === "right") {
+          // 移动的距离
+          const moveRight = x - (resizing?.startX || 0)
+          // 乘以2是因为左右两边都要拓宽
+          const width = (resizing.startWidth || 0) + moveRight * 2
+          setResponseSize(({ height }) => ({
+            height,
+            width,
+          }))
+        }
+        if (resizing?.handler === "bottom") {
+          // 移动的距离
+          const moveBottom = y - (resizing?.startY || 0)
+          const height = (resizing.startHeight || 0) + moveBottom
+          setResponseSize(({ width }) => ({
+            height,
+            width,
+          }))
+        }
+        if (resizing?.handler === "bottom-left") {
+          // 移动的距离
+          const moveLeft = x - (resizing?.startX || 0)
+          const moveBottom = y - (resizing?.startY || 0)
+          const width = (resizing.startWidth || 0) - moveLeft * 2
+          const height = (resizing.startHeight || 0) + moveBottom
+          setResponseSize(() => ({
+            height,
+            width,
+          }))
+        }
+        if (resizing?.handler === "bottom-right") {
+          // 移动的距离
+          const moveLeft = x - (resizing?.startX || 0)
+          const moveBottom = y - (resizing?.startY || 0)
+          const width = (resizing.startWidth || 0) + moveLeft * 2
+          const height = (resizing.startHeight || 0) + moveBottom
+          setResponseSize(() => ({
             height,
             width,
           }))
@@ -136,6 +174,14 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
     }
   }, [resizing])
 
+  function inject(content: { html?: string; css: string; id?: string }) {
+    // 向 iframe 传递 html css 渲染
+    iframeRef.current?.contentWindow?.postMessage(
+      { html: content.html, css: content.css, id: content.id },
+      "*"
+    )
+  }
+
   function dragLeft(e: MouseEventType) {
     e.preventDefault()
     const pos = getPointerPosition(e)
@@ -145,10 +191,46 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
       startX: pos.x,
     })
   }
-  function dragRight(e: MouseEventType) {}
-  function dragBottom(e: MouseEventType) {}
-  function dragBottomLeft(e: MouseEventType) {}
-  function dragBottomRight(e: TouchEvent<HTMLDivElement>) {}
+  function dragRight(e: MouseEventType) {
+    e.preventDefault()
+    const pos = getPointerPosition(e)
+    setResizing({
+      handler: "right",
+      startWidth: responseSize.width,
+      startX: pos.x,
+    })
+  }
+  function dragBottom(e: MouseEventType) {
+    e.preventDefault()
+    const pos = getPointerPosition(e)
+    setResizing({
+      handler: "bottom",
+      startHeight: responseSize.height,
+      startY: pos.y,
+    })
+  }
+  function dragBottomLeft(e: MouseEventType) {
+    e.preventDefault()
+    const pos = getPointerPosition(e)
+    setResizing({
+      handler: "bottom-left",
+      startWidth: responseSize.width,
+      startHeight: responseSize.height,
+      startX: pos.x,
+      startY: pos.y,
+    })
+  }
+  function dragBottomRight(e: MouseEventType) {
+    e.preventDefault()
+    const pos = getPointerPosition(e)
+    setResizing({
+      handler: "bottom-right",
+      startWidth: responseSize.width,
+      startHeight: responseSize.height,
+      startX: pos.x,
+      startY: pos.y,
+    })
+  }
 
   return (
     <div className="dark:bg-black w-full h-full" ref={rightPreviewRef}>
@@ -216,12 +298,14 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
                   }
                 : {}
             }
+            onLoad={() => inject({ html, css: iframeCss, id })}
           />
         </div>
         {/* 向右移动块 */}
         <div
           className="cursor-ew-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
           onTouchStart={dragRight}
+          onMouseDown={dragRight}
         >
           <svg
             viewBox="0 0 6 16"
@@ -237,6 +321,7 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
         <div
           className="cursor-nesw-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
           onTouchStart={dragBottomLeft}
+          onMouseDown={dragBottomLeft}
         >
           <svg
             viewBox="0 0 16 6"
@@ -253,6 +338,7 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
         <div
           className="cursor-ns-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
           onTouchStart={dragBottom}
+          onMouseDown={dragBottom}
         >
           <svg
             viewBox="0 0 16 6"
@@ -268,6 +354,7 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
         <div
           className="cursor-nwse-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
           onTouchStart={dragBottomRight}
+          onMouseDown={dragBottomRight}
         >
           <svg
             viewBox="0 0 16 6"

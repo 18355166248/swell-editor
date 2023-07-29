@@ -31,7 +31,11 @@ function Preview({ className }: PreviewProps) {
         console.log("🚀 ~ file: index.tsx:26 ~ compileMdx ~ error:", error)
         return
       }
-      setState({ html, css: initialContent.css, id: initialContent._id })
+      // 表示初始化
+      if (!initialContent._id) {
+        setState({ html, css: initialContent.css, id: initialContent._id })
+      }
+
     })
   }, [initialContent.html, initialContent.css, initialContent._id])
 

@@ -12,7 +12,6 @@ function EditorDesktop() {
 
   // 编辑器文本变化 更新代码
   const onChange = useCallback(() => {
-    console.log(editorConfigRef.current)
     if (editorConfigRef.current) {
       const { models } = editorConfigRef.current
       const { html, css, config } = models

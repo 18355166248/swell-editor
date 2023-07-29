@@ -27,7 +27,7 @@ export function getDefaultContent(): ContentProps {
   // })
 
   return {
-    _id: "content",
+    _id: "",
     html,
     css,
     config,
