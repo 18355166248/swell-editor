@@ -38,7 +38,7 @@ export const globalDataInit: GlobalFace = {
   codeTheme: "xonokai", // 代码 prism 主题
   split: "vertical",
   preview: false,
-  mobile: true,
+  mobile: false,
 }
 /**
  * GlobalReducer 接口

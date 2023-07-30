@@ -84,6 +84,9 @@ function ThemeSetting() {
                     className={`${
                       globalState.isMac ? "bg-sky-500" : "bg-sky-500/40"
                     }  inline-flex h-6 w-11 items-center rounded-full`}
+                    onChange={() =>
+                      setGlobalState({ isMac: !globalState.isMac })
+                    }
                   >
                     <span
                       className={`${

@@ -20,7 +20,7 @@ import {
 } from "./utils"
 import clsx from "clsx"
 
-const defaultResponseSize = { width: 375, height: 667 }
+const defaultResponseSize = { width: 540, height: 720 }
 
 export type MouseEventType = TouchEvent<HTMLDivElement> &
   MouseEvent<HTMLDivElement>
@@ -45,7 +45,7 @@ interface ResizingProps {
 function IframeContent({ html, css, id, className }: IframeContentProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { globalState } = usePenContext()
-  const { markdownTheme, codeTheme, mobile } = globalState
+  const { markdownTheme, codeTheme, mobile, split } = globalState
   // 预览区域的dom
   const rightPreviewRef = useRef<HTMLIFrameElement>(null)
   // 预览区域的宽高
@@ -64,8 +64,9 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
       size.width - handlerSize * 2,
       responseSize.width
     )
+
     const { height, zoom: zoomY } = getZoomWithHeight(
-      size.height - handlerSize * 2,
+      size.height - handlerSize - 40,
       responseSize.height
     )
 
@@ -233,41 +234,52 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
   }
 
   return (
-    <div className="dark:bg-black w-full h-full" ref={rightPreviewRef}>
+    <div
+      className="dark:bg-black bg-gray-50 w-full h-full"
+      ref={rightPreviewRef}
+    >
       {mobile ? (
-        <div className="flex-none text-center text-xs leading-4 tabular-nums whitespace-pre py-3 text-gray-900 dark:text-gray-400">
+        <div className="flex-none text-center text-xs tracking-widest leading-4 tabular-nums whitespace-pre py-3 text-gray-900 dark:text-gray-400">
           {responseSizeView.width} × {responseSizeView.height}
-          <span className="text-gray-500">
+          <span className="text-gray-500 ml-1">
             ({Math.round(responseSizeView.zoom * 100)}%)
           </span>
         </div>
       ) : null}
       <div
-        className={`grid justify-center w-full h-full ${className}`}
-        style={{
-          gridTemplateColumns: "1.0625rem min-content 1rem",
-          gridTemplateRows: "min-content 1.0625rem",
-        }}
+        className={`${
+          mobile ? "grid justify-center" : ""
+        } w-full h-full ${className}`}
+        style={
+          mobile
+            ? {
+                gridTemplateColumns: "1.0625rem min-content 1rem",
+                gridTemplateRows: "min-content 1.0625rem",
+              }
+            : {}
+        }
       >
         {/* 向左移动块 */}
-        <div
-          className="cursor-ew-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
-          onTouchStart={dragLeft}
-          onMouseDown={dragLeft}
-        >
-          <svg
-            viewBox="0 0 6 16"
-            width="6"
-            height="16"
-            fill="none"
-            stroke="currentColor"
+        {mobile ? (
+          <div
+            className="cursor-ew-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-0 flex items-center justify-center"
+            onTouchStart={dragLeft}
+            onMouseDown={dragLeft}
           >
-            <path d="M 0.5 0 V 16 M 5.5 0 V 16"></path>
-          </svg>
-        </div>
+            <svg
+              viewBox="0 0 6 16"
+              width="6"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M 0.5 0 V 16 M 5.5 0 V 16"></path>
+            </svg>
+          </div>
+        ) : null}
         {/* 预览模块 */}
         <div
-          className="border border-gray-200 dark:border-gray-700 shadow-sm"
+          className="border border-gray-200 dark:border-gray-700 shadow-sm w-full h-full"
           style={
             mobile
               ? {
@@ -302,71 +314,79 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
           />
         </div>
         {/* 向右移动块 */}
-        <div
-          className="cursor-ew-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
-          onTouchStart={dragRight}
-          onMouseDown={dragRight}
-        >
-          <svg
-            viewBox="0 0 6 16"
-            width="6"
-            height="16"
-            fill="none"
-            stroke="currentColor"
+        {mobile ? (
+          <div
+            className="cursor-ew-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-0 flex items-center justify-center"
+            onTouchStart={dragRight}
+            onMouseDown={dragRight}
           >
-            <path d="M 0.5 0 V 16 M 5.5 0 V 16"></path>
-          </svg>
-        </div>
+            <svg
+              viewBox="0 0 6 16"
+              width="6"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M 0.5 0 V 16 M 5.5 0 V 16"></path>
+            </svg>
+          </div>
+        ) : null}
         {/* 向左下移动 */}
-        <div
-          className="cursor-nesw-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
-          onTouchStart={dragBottomLeft}
-          onMouseDown={dragBottomLeft}
-        >
-          <svg
-            viewBox="0 0 16 6"
-            width="16"
-            height="6"
-            fill="none"
-            stroke="currentColor"
-            className="transform translate-x-0.5 -translate-y-0.5 rotate-45"
+        {mobile ? (
+          <div
+            className="cursor-nesw-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-0 flex items-center justify-center"
+            onTouchStart={dragBottomLeft}
+            onMouseDown={dragBottomLeft}
           >
-            <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
-          </svg>
-        </div>
+            <svg
+              viewBox="0 0 16 6"
+              width="16"
+              height="6"
+              fill="none"
+              stroke="currentColor"
+              className="transform translate-x-0.5 -translate-y-0.5 rotate-45"
+            >
+              <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
+            </svg>
+          </div>
+        ) : null}
         {/* 向下移动 */}
-        <div
-          className="cursor-ns-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
-          onTouchStart={dragBottom}
-          onMouseDown={dragBottom}
-        >
-          <svg
-            viewBox="0 0 16 6"
-            width="16"
-            height="6"
-            fill="none"
-            stroke="currentColor"
+        {mobile ? (
+          <div
+            className="cursor-ns-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-0 flex items-center justify-center"
+            onTouchStart={dragBottom}
+            onMouseDown={dragBottom}
           >
-            <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
-          </svg>
-        </div>
+            <svg
+              viewBox="0 0 16 6"
+              width="16"
+              height="6"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
+            </svg>
+          </div>
+        ) : null}
         {/* 向右下移动 */}
-        <div
-          className="cursor-nwse-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-150 flex items-center justify-center"
-          onTouchStart={dragBottomRight}
-          onMouseDown={dragBottomRight}
-        >
-          <svg
-            viewBox="0 0 16 6"
-            width="16"
-            height="6"
-            fill="none"
-            stroke="currentColor"
-            className="transform -translate-x-0.5 -translate-y-0.5 -rotate-45"
+        {mobile ? (
+          <div
+            className="cursor-nwse-resize select-none bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-400 transition-colors duration-0 flex items-center justify-center"
+            onTouchStart={dragBottomRight}
+            onMouseDown={dragBottomRight}
           >
-            <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
-          </svg>
-        </div>
+            <svg
+              viewBox="0 0 16 6"
+              width="16"
+              height="6"
+              fill="none"
+              stroke="currentColor"
+              className="transform -translate-x-0.5 -translate-y-0.5 -rotate-45"
+            >
+              <path d="M 0 0.5 H 16 M 0 5.5 H 16"></path>
+            </svg>
+          </div>
+        ) : null}
       </div>
     </div>
   )
