@@ -11,6 +11,7 @@ interface SizeProps {
   min: number
   max: number
   current: number
+  scale: number // 相对比屏幕的比例
 }
 
 function PenMain() {
@@ -18,13 +19,18 @@ function PenMain() {
   const { split, preview } = globalState
 
   const [resizing, setResizing] = useState(false)
-  const [size, setSize] = useState<SizeProps>({ min: 0, max: 0, current: 0 })
+  const [size, setSize] = useState<SizeProps>({
+    min: 0,
+    max: 0,
+    current: 0,
+    scale: 0.5,
+  })
 
   // 监听屏幕宽高的变化
   useLayoutEffect(() => {
     const isVertical = split === "vertical"
     function updateSize() {
-      setSize((size: any) => {
+      setSize((size) => {
         // 编辑器横向排列的时候就是浏览器宽度, 纵向的时候就是屏幕高度-顶部操作高度
         const windowSize = isVertical
           ? document.documentElement.clientWidth
@@ -35,9 +41,10 @@ function PenMain() {
         const max = isVertical ? windowSize - min : windowSize - 320
 
         return {
+          ...size,
           min,
           max,
-          current: 300,
+          current: Math.max(min, Math.min(max, windowSize * size.scale)),
         }
       })
     }
@@ -49,13 +56,25 @@ function PenMain() {
     }
   }, [split])
 
+  console.log(size)
+
   function onDragStarted() {
     setResizing(true)
   }
   function onDragFinished() {
     setResizing(false)
   }
-  function onChangeSplit(newSize: number) {}
+  function onChangeSplit(newSize: number) {
+    const isVertical = split === "vertical"
+    // 编辑器横向排列的时候就是浏览器宽度, 纵向的时候就是屏幕高度-顶部操作高度
+    const windowSize = isVertical
+      ? document.documentElement.clientWidth
+      : document.documentElement.clientHeight - headerHeight
+    setSize({
+      ...size,
+      scale: newSize / windowSize,
+    })
+  }
 
   return (
     <main className="relative border-solid flex-1 border-t border-gray-200 dark:border-gray-800">
