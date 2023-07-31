@@ -3,8 +3,9 @@ import Editor from "./Editor"
 import Preview from "./Preview"
 import { usePenContext } from "../IndexProvider"
 import SplitPane from "react-split-pane"
-import { use, useState } from "react"
+import { use, useLayoutEffect, useState } from "react"
 import clsx from "clsx"
+import { editorTabBarHeight, headerHeight } from "../utils"
 
 interface SizeProps {
   min: number
@@ -17,7 +18,36 @@ function PenMain() {
   const { split, preview } = globalState
 
   const [resizing, setResizing] = useState(false)
-  const [size, setSize] = useState<SizeProps>()
+  const [size, setSize] = useState<SizeProps>({ min: 0, max: 0, current: 0 })
+
+  // 监听屏幕宽高的变化
+  useLayoutEffect(() => {
+    const isVertical = split === "vertical"
+    function updateSize() {
+      setSize((size: any) => {
+        // 编辑器横向排列的时候就是浏览器宽度, 纵向的时候就是屏幕高度-顶部操作高度
+        const windowSize = isVertical
+          ? document.documentElement.clientWidth
+          : document.documentElement.clientHeight - headerHeight
+
+        // 横向的时候最小宽度320 纵向的时候最小高度为320+编辑器顶部 tabbar 的高度
+        const min = isVertical ? 320 : 320 + editorTabBarHeight
+        const max = isVertical ? windowSize - min : windowSize - 320
+
+        return {
+          min,
+          max,
+          current: 300,
+        }
+      })
+    }
+
+    updateSize()
+    window.addEventListener("resize", updateSize)
+    return () => {
+      window.removeEventListener("resize", updateSize)
+    }
+  }, [split])
 
   function onDragStarted() {
     setResizing(true)
@@ -25,9 +55,7 @@ function PenMain() {
   function onDragFinished() {
     setResizing(false)
   }
-  function onChangeSplit(newSize: number) {
-    console.log("newSize", newSize)
-  }
+  function onChangeSplit(newSize: number) {}
 
   return (
     <main className="relative border-solid flex-1 border-t border-gray-200 dark:border-gray-800">

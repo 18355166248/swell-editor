@@ -17,7 +17,8 @@ import {
   getZoomWithHeight,
   getZoomWithWidth,
   handlerSize,
-} from "./utils"
+  previewSizeHeight,
+} from "../../utils"
 import clsx from "clsx"
 
 const defaultResponseSize = { width: 540, height: 720 }
@@ -66,7 +67,7 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
     )
 
     const { height, zoom: zoomY } = getZoomWithHeight(
-      size.height - handlerSize - 40,
+      size.height - handlerSize - previewSizeHeight,
       responseSize.height
     )
 

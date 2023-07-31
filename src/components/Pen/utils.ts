@@ -1,7 +1,11 @@
-import { MouseEventType } from "./IframeContent"
+import { MouseEventType } from "./PenMain/Preview/IframeContent"
 
 export const minView = { minWidth: 50, minHeight: 50 }
 export const handlerSize = 17 // 操作预览区域宽高的高度或者宽度
+export const headerHeight = 60 // 顶部操作行高度
+export const editorTabBarHeight = 40 // 编辑区顶部 Tabbar (mdx, css, config) 的高度
+export const previewSizeHeight = 40 // 预览器顶部展示尺寸的高度
+
 // 获取鼠标移动位置
 export function getPointerPosition(e: MouseEventType) {
   return { x: e.clientX, y: e.clientY }
