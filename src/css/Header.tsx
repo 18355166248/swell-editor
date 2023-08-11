@@ -1,21 +1,25 @@
 import SvgButton from "@/commonComponents/SvgButton"
+import { themeType } from "../components/Pen/IndexProvider"
 
 interface HeaderProps {
   leftBtn: React.ReactNode
   rightBtn: React.ReactNode
+  setTheme: (theme: themeType) => void
 }
 
-function Header({ leftBtn, rightBtn }: HeaderProps) {
+function Header({ leftBtn, rightBtn, setTheme }: HeaderProps) {
   function toggleTheme() {
     const root = document.querySelector("html")
     if (root) {
       root.classList.add("disable-transitions")
       if (root.classList.contains("dark")) {
+        setTheme("light")
         root.classList.remove("dark")
         try {
           window.localStorage.setItem("theme", "light")
         } catch (_) {}
       } else {
+        setTheme("dark")
         root.classList.add("dark")
         try {
           window.localStorage.setItem("theme", "dark")
@@ -40,7 +44,7 @@ function Header({ leftBtn, rightBtn }: HeaderProps) {
           <div className="hidden sm:block mx-4 lg:mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
         )}
         {/* 公共右侧按钮 */}
-        {/* 夜间模式 */}
+        {/* 夜间/白天模式 */}
         <button
           onClick={toggleTheme}
           type="button"

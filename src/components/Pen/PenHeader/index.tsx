@@ -1,17 +1,24 @@
-import Header from "@/components/Header"
+import Header from "@/css/Header"
 import CopyBtn from "./CopyBtn"
 import ExportPDFBtn from "./ExportPDFBtn"
 import ThemeSetting from "./ThemeSetting"
 import SvgButton from "@/commonComponents/SvgButton"
 import clsx from "clsx"
-import { usePenContext } from "../IndexProvider"
+import { themeType, usePenContext } from "../IndexProvider"
 
 function PenHeader() {
   const { globalState, setGlobalState } = usePenContext()
   const { split, preview, mobile } = globalState
 
+  function setTheme(theme: themeType) {
+    setGlobalState({
+      theme,
+    })
+  }
+
   return (
     <Header
+      setTheme={setTheme}
       leftBtn={
         <>
           <CopyBtn />
@@ -97,8 +104,8 @@ function PenHeader() {
             <button
               onClick={() =>
                 setGlobalState({
-                  preview: !preview,
-                  split: !preview ? undefined : split,
+                  preview: true,
+                  split: undefined,
                 })
               }
               type="button"

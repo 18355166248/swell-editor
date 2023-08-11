@@ -1,12 +1,13 @@
 import { createMonacoEditor } from "@/monaco"
 import { useCallback, useEffect, useRef } from "react"
 import { usePenContext } from "../../IndexProvider"
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api"
 
 function EditorDesktop() {
   const editorContainerRef = useRef<HTMLDivElement>(null)
 
   const { globalState, setGlobalState } = usePenContext()
-  const { initialContent, activeTab, editorConfig } = globalState
+  const { theme, initialContent, activeTab, editorConfig } = globalState
 
   const editorConfigRef = useRef(editorConfig)
 
@@ -31,6 +32,7 @@ function EditorDesktop() {
       container: editorContainerRef.current,
       initialContent,
       onChange,
+      onScroll,
     })
     setGlobalState({
       editorConfig,
@@ -42,6 +44,10 @@ function EditorDesktop() {
       editorConfig.dispose()
     }
   }, [])
+
+  useEffect(() => {
+    monaco.editor.setTheme(theme)
+  }, [theme])
 
   // 监听编辑器是否宽高有变化 动态刷新编辑器位置
   useEffect(() => {
@@ -63,7 +69,11 @@ function EditorDesktop() {
     models[activeTab].activate()
   }, [activeTab, editorConfig])
 
-  function onScroll() {}
+  function onScroll(startLineNumber: number) {
+    setGlobalState({
+      startLineNumber,
+    })
+  }
 
   return <div className="pt-12 flex-auto h-full" ref={editorContainerRef}></div>
 }

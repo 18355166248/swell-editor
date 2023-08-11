@@ -16,12 +16,14 @@ export interface CreateMonacoEditorProps {
   container: HTMLElement
   initialContent: ContentProps
   onChange: () => void
+  onScroll: (startLineNumber: number) => void
 }
 
 export function createMonacoEditor({
   container,
   initialContent,
   onChange,
+  onScroll,
 }: CreateMonacoEditorProps) {
   const disposables: any[] = [] // 销毁列表
 
@@ -103,6 +105,15 @@ export function createMonacoEditor({
     "editor.action.formatDocument",
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
   )
+
+  editor.onDidScrollChange((e) => {
+    if (!e.scrollTopChanged) return
+    const currentModel = editor.getModel()
+    if (currentModel === html.getModel()) {
+      const { startLineNumber } = editor.getVisibleRanges()[0]
+      onScroll(startLineNumber)
+    }
+  })
 
   // 整合模型
   const models = { html, css, config }

@@ -46,7 +46,7 @@ interface ResizingProps {
 function IframeContent({ html, css, id, className }: IframeContentProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { globalState } = usePenContext()
-  const { markdownTheme, codeTheme, mobile, split } = globalState
+  const { markdownTheme, codeTheme, mobile, startLineNumber } = globalState
   // 预览区域的dom
   const rightPreviewRef = useRef<HTMLIFrameElement>(null)
   // 预览区域的宽高
@@ -100,6 +100,10 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
   useEffect(() => {
     inject({ html, css: iframeCss, id })
   }, [html, id, iframeCss])
+
+  useEffect(() => {
+    inject({ startLineNumber })
+  })
 
   useLayoutEffect(() => {
     if (resizing) {
@@ -176,10 +180,15 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
     }
   }, [resizing])
 
-  function inject(content: { html?: string; css: string; id?: string }) {
+  function inject(content: {
+    startLineNumber?: number
+    html?: string
+    css?: string
+    id?: string
+  }) {
     // 向 iframe 传递 html css 渲染
     iframeRef.current?.contentWindow?.postMessage(
-      { html: content.html, css: content.css, id: content.id },
+      { html: content.html, css: content.css, id: content.id, startLineNumber },
       "*"
     )
   }

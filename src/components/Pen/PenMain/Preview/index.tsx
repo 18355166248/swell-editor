@@ -1,7 +1,6 @@
 import { compileMdx } from "@/MDX/compileMDX"
 import { usePenContext } from "../../IndexProvider"
-import { FC, useCallback, useEffect, useState } from "react"
-import { VFile } from "vfile-statistics/lib"
+import { useEffect, useState } from "react"
 import { VFileMessage } from "vfile-message"
 import { ErrorBoundary } from "react-error-boundary"
 import IframeContent, { IframeContentProps } from "./IframeContent"

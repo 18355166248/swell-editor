@@ -3,7 +3,7 @@ import Editor from "./Editor"
 import Preview from "./Preview"
 import { usePenContext } from "../IndexProvider"
 import SplitPane from "react-split-pane"
-import { use, useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import clsx from "clsx"
 import { editorTabBarHeight, headerHeight } from "../utils"
 
@@ -40,6 +40,16 @@ function PenMain() {
         const min = isVertical ? 320 : 320 + editorTabBarHeight
         const max = isVertical ? windowSize - min : windowSize - 320
 
+        if (preview) {
+          // 隐藏左侧
+          return {
+            ...size,
+            min: 0,
+            max: 0,
+            current: 0,
+          }
+        }
+
         return {
           ...size,
           min,
@@ -54,9 +64,7 @@ function PenMain() {
     return () => {
       window.removeEventListener("resize", updateSize)
     }
-  }, [split])
-
-  console.log(size)
+  }, [split, preview])
 
   function onDragStarted() {
     setResizing(true)

@@ -73,7 +73,23 @@
     <style id="_style"></style>
     <script>
       window.addEventListener("message", (e) => {
-        const { html, css } = e.data
+        const { html, css, startLineNumber } = e.data
+        if (startLineNumber) {
+          const previewEle = document.documentElement
+
+          const el = document.querySelector(`[data-line="${+startLineNumber}"]`)
+
+          if (el) {
+            // scrollTop 一个元素的内容垂直滚动的像素数
+            // offsetTop 当前元素相对于offsetParent元素的顶部内边距的距离
+            previewEle.scrollTo({
+              top: el.offsetTop - el.parentNode.scrollTop,
+              behavior: "smooth",
+            })
+          }
+          return
+        }
+
         if (html) {
           setHTML(html)
         }

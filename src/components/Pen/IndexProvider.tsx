@@ -3,8 +3,11 @@ import { getDefaultContent } from "@/utils/getDefaultContent"
 import { createContext, Dispatch, useContext, useReducer } from "react"
 import { CreateMonacoEditorResult } from "../../monaco"
 import { CodeThemesKeysType } from "@/css/prism-themes"
+import { getTheme } from "@/utils/theme"
 
 export type TabBarKey = "html" | "css" | "config"
+
+export type themeType = "light" | "dark"
 
 export interface ContentProps {
   _id: string
@@ -17,6 +20,7 @@ export interface ContentProps {
  * 定义要储存的类型接口
  */
 export interface GlobalFace {
+  theme: themeType
   isMac: boolean // 编辑器的代码块是否展示 Mac 风格
   markdownTheme: THEME_KEY // md预览主题
   codeTheme: CodeThemesKeysType // 代码 prism 主题
@@ -26,11 +30,13 @@ export interface GlobalFace {
   split?: "vertical" | "horizontal" // vertical左右  horizontal上下
   preview: boolean // 只预览 隐藏编辑
   mobile: boolean // 预览 展示手机模式
+  startLineNumber: number // mdx 编辑模式 编辑器滚动的开始值
 }
 /**
  * 初始值
  */
 export const globalDataInit: GlobalFace = {
+  theme: getTheme() === "dark" ? "dark" : "light",
   isMac: true,
   markdownTheme: "default",
   initialContent: getDefaultContent(),
@@ -39,6 +45,7 @@ export const globalDataInit: GlobalFace = {
   split: "vertical",
   preview: false,
   mobile: false,
+  startLineNumber: 0,
 }
 /**
  * GlobalReducer 接口
