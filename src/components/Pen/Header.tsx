@@ -1,5 +1,5 @@
 import SvgButton from "@/commonComponents/SvgButton"
-import { themeType } from "../components/Pen/IndexProvider"
+import { themeType } from "./IndexProvider"
 
 interface HeaderProps {
   leftBtn: React.ReactNode

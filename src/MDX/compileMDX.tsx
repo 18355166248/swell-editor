@@ -1,4 +1,4 @@
-import { MDXProvider } from "@mdx-js/react"
+import { MDXProvider, useMDXComponents } from "@mdx-js/react"
 import { renderToReadableStream } from "react-dom/server"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
@@ -12,17 +12,19 @@ import { VFile } from "vfile"
 import { VFileMessage } from "vfile-message"
 import * as runtime from "react/jsx-runtime"
 import type { PluggableList } from "unified"
-import { Fragment, createContext } from "react"
+import { Fragment, createContext, useContext } from "react"
 import { defaultComponents } from "./DefaultComponents"
 import rehypeAddLineNumbers from "./customRehypePlugins"
 
-export const Context = createContext({ isMac: true })
+export const MdxContext = createContext({ isMac: true })
+export const useMdxContent = () => useContext(MdxContext)
 
 export interface CompileMdxProps {
   mdx: string
+  isMac: boolean
 }
 
-async function compileMdx({ mdx }: CompileMdxProps) {
+async function compileMdx({ mdx, isMac }: CompileMdxProps) {
   const file = new VFile({ basename: "example.mdx", value: mdx })
   let html = ""
   let error
@@ -49,21 +51,22 @@ async function compileMdx({ mdx }: CompileMdxProps) {
         remarkPlugins,
         rehypePlugins,
         Fragment,
+        useMDXComponents,
       })
     ).default
     // MDN https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStream
     const res = renderToReadableStream(
-      <Context.Provider value={{ isMac: true }}>
-        <MDXProvider components={{ ...defaultComponents }}>
-          <section
-            data-tool="编辑器"
-            data-website="https://bing.com"
-            className="markdown-body"
-          >
+      <MdxContext.Provider value={{ isMac }}>
+        <section
+          data-tool="编辑器"
+          data-website="https://bing.com"
+          className="markdown-body"
+        >
+          <MDXProvider components={{ ...defaultComponents }}>
             <Content />
-          </section>
-        </MDXProvider>
-      </Context.Provider>
+          </MDXProvider>
+        </section>
+      </MdxContext.Provider>
     )
     await res
       .then((rb) => {

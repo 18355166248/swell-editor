@@ -13,7 +13,7 @@ const Heading = function Heading({
   ...props
 }) {
   return (
-    <Comp {...props} className={className}>
+    <Comp {...props} className={className} data-nmae="22">
       {children}
     </Comp>
   )

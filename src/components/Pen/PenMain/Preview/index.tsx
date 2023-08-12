@@ -20,23 +20,29 @@ interface PreviewProps {
 }
 
 function Preview({ className }: PreviewProps) {
-  const [state, setState] = useState<IframeContentProps>()
+  const [state, setState] = useState<
+    IframeContentProps & { refreshId: number } // refreshId 目的是为了同步执行渲染preview 如果不加 修改mdx pre 不会执行渲染
+  >()
   const { globalState } = usePenContext()
-  const { initialContent } = globalState
+  const { initialContent, isMac } = globalState
 
   useEffect(() => {
-    compileMdx({ mdx: initialContent.html }).then(({ error, html }) => {
+    compileMdx({ mdx: initialContent.html, isMac }).then(({ error, html }) => {
       if (error) {
         console.log("🚀 ~ file: index.tsx:26 ~ compileMdx ~ error:", error)
         return
       }
       // 表示初始化
       if (!initialContent._id) {
-        setState({ html, css: initialContent.css, id: initialContent._id })
+        setState({
+          html,
+          css: initialContent.css,
+          id: initialContent._id,
+          refreshId: state?.refreshId || 1,
+        })
       }
-
     })
-  }, [initialContent.html, initialContent.css, initialContent._id])
+  }, [initialContent.html, initialContent.css, initialContent._id, isMac])
 
   function ErrorFallback({ error, resetErrorBoundary }: any) {
     return (

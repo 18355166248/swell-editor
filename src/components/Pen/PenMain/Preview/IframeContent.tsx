@@ -31,6 +31,7 @@ export interface IframeContentProps {
   css?: string
   id?: string
   className?: string
+  refreshId?: number
 }
 
 type HandlerType = "left" | "right" | "bottom-left" | "bottom" | "bottom-right"
@@ -43,7 +44,13 @@ interface ResizingProps {
   startY?: number
 }
 
-function IframeContent({ html, css, id, className }: IframeContentProps) {
+function IframeContent({
+  html,
+  css,
+  id,
+  className,
+  refreshId,
+}: IframeContentProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { globalState } = usePenContext()
   const { markdownTheme, codeTheme, mobile, startLineNumber } = globalState
@@ -99,11 +106,11 @@ function IframeContent({ html, css, id, className }: IframeContentProps) {
 
   useEffect(() => {
     inject({ html, css: iframeCss, id })
-  }, [html, id, iframeCss])
+  }, [html, id, iframeCss, refreshId])
 
   useEffect(() => {
     inject({ startLineNumber })
-  })
+  }, [startLineNumber])
 
   useLayoutEffect(() => {
     if (resizing) {
