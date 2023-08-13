@@ -30,7 +30,20 @@ function Chart({ data = [], color }) {
   )
 }
 
+class Hello extends React.Component {
+  render() {
+    const { name } = this.props
+    return (
+      <div>
+        Hello! <span className="gradient-text">{name}</span>
+      </div>
+    )
+  }
+}
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   List,
   Chart,
+  Hello,
 }

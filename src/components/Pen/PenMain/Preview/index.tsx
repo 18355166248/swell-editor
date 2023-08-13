@@ -27,7 +27,11 @@ function Preview({ className }: PreviewProps) {
   const { initialContent, isMac } = globalState
 
   useEffect(() => {
-    compileMdx({ mdx: initialContent.html, isMac }).then(({ error, html }) => {
+    compileMdx({
+      mdx: initialContent.html,
+      isMac,
+      jsx: initialContent.config,
+    }).then(({ error, html }) => {
       if (error) {
         console.log("🚀 ~ file: index.tsx:26 ~ compileMdx ~ error:", error)
         return

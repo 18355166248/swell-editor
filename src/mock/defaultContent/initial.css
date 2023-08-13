@@ -1,11 +1,90 @@
 .list-card {
-  margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 15px;
   max-width: 320px;
   background: #ffffff;
-  border: 1px solid #94cff7;
+  border: 1px solid #e879f9;
   opacity: 1;
   border-radius: 6px;
   padding: 5.5px;
+}
+.list-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: -15px;
+  margin-bottom: -3px;
+}
+.list-head-line {
+  width: 7px;
+  height: 17px;
+  background: #ffffff;
+  border: 1px solid #c026d3;
+  opacity: 1;
+  border-radius: 77px;
+}
+.list-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #c026d3;
+  border-radius: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 15px;
+}
+.markdown-body .list-card ul {
+  display: flex;
+  flex-direction: column;
+  min-height: 40px;
+  padding: 15px 10px 0 30px;
+  list-style: circle;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.markdown-body .list-card ul li a {
+  border-bottom: 0;
+}
+.list-card ul li {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: #c026d3;
+}
+@media print {
+  body {
+    padding: 20px;
+  }
+  .markdown-body {
+    line-height: 1.5;
+  }
+}
+
+.snowfall {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.snowfall-bar {
+  flex-basis: 0;
+  flex-grow: 1;
+  margin: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  font-size: 10px;
+  color: #eff6ff;
+}
+
+/* 字体渐变色 */
+.gradient-text {
+  font-size: 34px;
+  line-height: 32px;
+  letter-spacing: 2px;
+  color: #a00000;
+  background-image: -webkit-linear-gradient(top, blue, pink, red);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

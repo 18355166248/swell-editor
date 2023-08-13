@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@babel/standalone": "^7.22.10",
     "@codemirror/lang-markdown": "^6.2.0",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@headlessui/react": "^1.7.15",
@@ -68,6 +69,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",
+    "@types/babel__standalone": "^7.1.4",
     "@types/dlv": "^1.1.2",
     "@types/lodash-es": "^4.17.8",
     "@types/node": "20.4.2",

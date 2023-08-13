@@ -13,6 +13,16 @@ I just love **bold text**.
 
 > Dorothy followed her through many of the beautiful rooms in her castle.
 
+# 自定义 React 组件
+
+<Hello name="Swell" />
+
+<Chart data={[3, 7, 2.5, 8.5, 12.5, 5.5, 8, 3.5, 0.5, 3.5, 8.5, 7]} color="yellowgreen"/>
+
+<List title="头部标题">
+  列表
+</List>
+
 ## 分割线
 
 ---

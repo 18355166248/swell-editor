@@ -12,22 +12,45 @@ import { VFile } from "vfile"
 import { VFileMessage } from "vfile-message"
 import * as runtime from "react/jsx-runtime"
 import type { PluggableList } from "unified"
-import { Fragment, createContext, useContext } from "react"
+import React, { Fragment, createContext, useContext } from "react"
 import { defaultComponents } from "./DefaultComponents"
 import rehypeAddLineNumbers from "./customRehypePlugins"
+import * as Babebl from "@babel/standalone"
+import { validateReactComponents } from "@/utils/validateReactCom"
 
 export const MdxContext = createContext({ isMac: true })
 export const useMdxContent = () => useContext(MdxContext)
 
 export interface CompileMdxProps {
   mdx: string
+  jsx: string
   isMac: boolean
 }
 
-async function compileMdx({ mdx, isMac }: CompileMdxProps) {
+async function compileMdx({ mdx, jsx, isMac }: CompileMdxProps) {
   const file = new VFile({ basename: "example.mdx", value: mdx })
   let html = ""
   let error
+  let customComponents = {} // 自定义组件
+
+  let code = Babebl.transform(jsx, { presets: ["react"] }).code
+  code = code.replace("export default", "return")
+
+  try {
+    customComponents = new Function("React", code)(React)
+
+    if (!validateReactComponents(Object.values(customComponents))) {
+      return {
+        error: new Error(
+          "Not the correct react component (不是正确的 react 组件)"
+        ),
+      }
+    }
+  } catch (error) {
+    return {
+      error,
+    }
+  }
 
   const remarkPlugins = [
     remarkGfm,
@@ -62,7 +85,9 @@ async function compileMdx({ mdx, isMac }: CompileMdxProps) {
           data-website="https://bing.com"
           className="markdown-body"
         >
-          <MDXProvider components={{ ...defaultComponents }}>
+          <MDXProvider
+            components={{ ...defaultComponents, ...customComponents }}
+          >
             <Content />
           </MDXProvider>
         </section>
