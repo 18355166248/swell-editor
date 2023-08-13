@@ -17,7 +17,7 @@ I just love **bold text**.
 
 <Hello name="Swell" />
 
-<Chart data={[3, 7, 2.5, 8.5, 12.5, 5.5, 8, 3.5, 0.5, 3.5, 8.5, 7]} color="yellowgreen"/>
+<Chart data={[3, 7, 2.5, 8.5, 12.5, 5.5, 8, 3.5, 0.5, 3.5, 8.5, 7]} color="#93c5fd"/>
 
 <List title="头部标题">
   列表

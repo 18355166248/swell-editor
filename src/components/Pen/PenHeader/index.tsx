@@ -5,6 +5,7 @@ import ThemeSetting from "./ThemeSetting"
 import SvgButton from "@/commonComponents/SvgButton"
 import clsx from "clsx"
 import { themeType, usePenContext } from "../IndexProvider"
+import ExportMD from "./ExportMD"
 
 function PenHeader() {
   const { globalState, setGlobalState } = usePenContext()
@@ -21,8 +22,9 @@ function PenHeader() {
       setTheme={setTheme}
       leftBtn={
         <>
-          <CopyBtn />
+          {/* <CopyBtn /> */}
           <ExportPDFBtn />
+          <ExportMD />
         </>
       }
       rightBtn={
