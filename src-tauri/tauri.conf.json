@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "megalo-mdx-editor",
+    "productName": "swell-editor",
     "version": "0.1.0"
   },
   "tauri": {
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "megalo-mdx-editor",
+        "title": "swell-editor",
         "width": 800
       }
     ]
