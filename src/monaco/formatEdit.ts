@@ -38,7 +38,7 @@ function registerDocumentFormattingEditProviders () {
   const _registerDocumentFormattingEditProvider =
     monaco.languages.registerDocumentFormattingEditProvider;
 
-  // 注册不同余元格式化的方法
+  // 注册不同单元格式化的方法
   disposables.push(_registerDocumentFormattingEditProvider("markdown", formattingEditProvider))
   disposables.push(_registerDocumentFormattingEditProvider("css", formattingEditProvider))
   disposables.push(_registerDocumentFormattingEditProvider("javascript", formattingEditProvider))

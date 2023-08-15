@@ -106,6 +106,7 @@ export function createMonacoEditor({
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
   )
 
+  // 监听编辑器滚动事件, 获取滚动代码的 startLineNumber 用于右侧预览区同步滚动
   editor.onDidScrollChange((e) => {
     if (!e.scrollTopChanged) return
     const currentModel = editor.getModel()
