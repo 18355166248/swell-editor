@@ -50,7 +50,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <video id="video" controls="" preload="none" poster="封面">
   <source id="mp4" src="./assets/demo.mov" type="video/mp4">
-</videos>
+</video>
+
+
 
 ### 布局
 
